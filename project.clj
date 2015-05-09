@@ -8,5 +8,6 @@
                  [http-kit "2.1.18"]
                  [compojure "1.3.3"]
                  [cheshire "5.4.0"]
-                 [korma "0.4.0"]]
+                 [korma "0.4.0"]
+                 [org.postgresql/postgresql "9.2-1002-jdbc4"]]
   :main word-keeper.core)
