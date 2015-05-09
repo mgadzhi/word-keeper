@@ -23,7 +23,7 @@
 (defn json-response [body & status]
   (let [status (or status 200)]
     {:status status
-     :headers {"Content-Type" "application/json"}
+     :headers {"Content-Type" "application/json; charset=utf-8"}
      :body (generate-string body)}))
 
 (defn users-view [req]
@@ -32,10 +32,14 @@
 (defn languages-view [req]
   (json-response (get-languages)))
 
+(defn translations-view [req]
+  (json-response (get-translations)))
+
 (defroutes routes
   (GET "/" [] (logged-handler hello))
   (GET "/users" [] users-view)
   (GET "/languages" [] languages-view)
+  (GET "/translations" [] translations-view)
   (not-found "Page not found"))
 
 (defn -main [& args]

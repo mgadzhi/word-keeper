@@ -1,13 +1,12 @@
 (ns word-keeper.db
   (:require [korma.db :refer [defdb postgres]]
-            [korma.core :refer [defentity
-                                entity-fields
-                                select]]))
+            [korma.core :refer :all]))
 
 (defdb dev-db (postgres {:db "wordkeeper"
                          :user "wordkeeper"}))
 
-(defentity users)
+(defentity users
+  (has-many translations {:fk :user_id}))
 (defentity languages)
 (defentity translations)
 
@@ -18,4 +17,4 @@
   (select languages))
 
 (defn get-translations []
-  (select translations))
+  (select users (with translations)))
