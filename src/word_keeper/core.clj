@@ -59,5 +59,5 @@
   (let [handler (if (in-dev?)
                   (reload/wrap-reload (site #'routes))
                   (site routes))]
-    (run-server handler {:port 8080})
-    (println "Head to localhost:8080")))
+    (run-server handler {:port 8000})
+    (println "Head to localhost:8000")))
