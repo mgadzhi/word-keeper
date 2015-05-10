@@ -30,5 +30,5 @@
   :local-repo ~(local-repo-path)
   :plugins [[ragtime/ragtime.lein "0.3.8"]]
   :ragtime {:migrations ragtime.sql.files/migrations
-            :database ~(db-url)}
+            :database db-url}
   :main word-keeper.core)
