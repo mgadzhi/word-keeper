@@ -1,3 +1,19 @@
+(defn local-repo-path []
+  (get (System/getenv) "M2_REPO" (str (get (System/getenv) "HOME") "/.m2/repository")))
+
+(defn db-url []
+  (str
+    "jdbc:postgresql://"
+    (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_HOST" "localhost")
+    ":"
+    (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_PORT" "5432")
+    "/"
+    (get (System/getenv) "OPENSHIFT_APP_NAME" "wordkeeper")
+    "?user="
+    (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_USERNAME" "wordkeeper")
+    "&password="
+    (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_PASSWORD" "")))
+
 (defproject word-keeper "0.1.0-SNAPSHOT"
   :description "JSON API for word keeper"
   :url "https://github.com/mgadzhi/word-keeper"
@@ -13,6 +29,7 @@
                  [ragtime "0.3.8"]
                  [buddy "0.5.3"]]
   :plugins [[ragtime/ragtime.lein "0.3.8"]]
+  :local-repo ~(local-repo-path)
   :ragtime {:migrations ragtime.sql.files/migrations
-            :database "jdbc:postgresql://localhost/wordkeeper?user=wordkeeper"}
+            :database ~(db-url)}
   :main word-keeper.core)

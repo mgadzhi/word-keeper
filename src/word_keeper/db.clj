@@ -2,8 +2,11 @@
   (:require [korma.db :refer [defdb postgres]]
             [korma.core :refer :all]))
 
-(defdb dev-db (postgres {:db "wordkeeper"
-                         :user "wordkeeper"}))
+(defdb dev-db (postgres {:host (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_HOST" "localhost")
+                         :port (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_PORT" "5432")
+                         :db   (get (System/getenv) "OPENSHIFT_APP_NAME" "wordkeeper")
+                         :user (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_USERNAME" "wordkeeper")
+                         :password (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_PASSWORD" "")}))
 
 (defentity users)
 (defentity languages)
