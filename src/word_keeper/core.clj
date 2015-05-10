@@ -58,6 +58,8 @@
 (defn -main [& args]
   (let [handler (if (in-dev?)
                   (reload/wrap-reload (site #'routes))
-                  (site routes))]
-    (run-server handler {:port 8080})
-    (println "Head to localhost:8080")))
+                  (site routes))
+        port (Integer/parseInt (get (System/getenv) "OPENSHIFT_CLOJURE_HTTP_PORT" "8080"))
+        ip (get (System/getenv) "OPENSHIFT_CLOJURE_HTTP_IP" "0.0.0.0")]
+    (run-server handler {:ip ip :port port})
+    (println "Application run " ip ":" port)))
