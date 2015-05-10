@@ -1,7 +1,7 @@
 (defn local-repo-path []
   (get (System/getenv) "M2_REPO" (str (get (System/getenv) "HOME") "/.m2/repository")))
 
-(def db-url
+(defn db-url []
   (str
     "jdbc:postgresql://"
     (get (System/getenv) "OPENSHIFT_POSTGRESQL_DB_HOST" "localhost")
@@ -30,5 +30,5 @@
   :local-repo ~(local-repo-path)
   :plugins [[ragtime/ragtime.lein "0.3.8"]]
   :ragtime {:migrations ragtime.sql.files/migrations
-            :database db-url}
+            :database ~(db-url)}
   :main word-keeper.core)
