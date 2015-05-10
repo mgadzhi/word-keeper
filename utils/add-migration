@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+now=`date +"%Y%m%d%H%M%S"`
+name=$1
+
+echo 'Create up-migration'
+touch ./migrations/$now-$name.up.sql
+echo 'Create down-migration'
+touch ./migrations/$now-$name.down.sql
+echo 'Done'
