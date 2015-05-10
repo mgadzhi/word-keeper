@@ -9,6 +9,8 @@
 
 (defn in-dev? [] true)
 
+(def uid 1)
+
 (defn hello [req]
   {:status 200
    :headers {"Content-Type" "text/html"}
@@ -32,14 +34,16 @@
 (defn languages-view [req]
   (json-response (get-languages)))
 
-(defn translations-view [req]
-  (json-response (get-translations)))
+(defn translations-view [from to]
+  (fn [req]
+    (let [trans (get-translations uid from to)]
+      (json-response trans))))
 
 (defroutes routes
   (GET "/" [] (logged-handler hello))
   (GET "/users" [] users-view)
   (GET "/languages" [] languages-view)
-  (GET "/translations" [] translations-view)
+  (GET "/translations/:from/:to" [from to] (translations-view from to))
   (not-found "Page not found"))
 
 (defn -main [& args]

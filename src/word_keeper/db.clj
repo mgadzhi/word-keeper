@@ -5,8 +5,7 @@
 (defdb dev-db (postgres {:db "wordkeeper"
                          :user "wordkeeper"}))
 
-(defentity users
-  (has-many translations {:fk :user_id}))
+(defentity users)
 (defentity languages)
 (defentity translations)
 
@@ -16,5 +15,8 @@
 (defn get-languages []
   (select languages))
 
-(defn get-translations []
-  (select users (with translations)))
+(defn get-translations [uid from to]
+  (select translations
+          (where {:user_id uid
+                  :from_lang from
+                  :to_lang to})))
