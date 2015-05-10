@@ -5,7 +5,10 @@
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :refer [not-found]]
             [cheshire.core :refer [generate-string]]
-            [word-keeper.db :refer [get-users get-languages get-translations]]))
+            [word-keeper.db :refer [get-users
+                                    get-languages
+                                    get-vocabularies
+                                    get-vocabulary]]))
 
 (defn in-dev? [] true)
 
@@ -34,16 +37,22 @@
 (defn languages-view [req]
   (json-response (get-languages)))
 
-(defn translations-view [from to]
+(defn vocabularies-view [uid]
   (fn [req]
-    (let [trans (get-translations uid from to)]
-      (json-response trans))))
+    (json-response
+     (get-vocabularies uid))))
+
+(defn vocabulary-view [uid from to]
+  (fn [req]
+    (let [vocab (get-vocabulary uid from to)]
+      (json-response vocab))))
 
 (defroutes routes
   (GET "/" [] (logged-handler hello))
   (GET "/users" [] users-view)
   (GET "/languages" [] languages-view)
-  (GET "/translations/:from/:to" [from to] (translations-view from to))
+  (GET "/vocabularies" [] (vocabularies-view uid))
+  (GET "/vocabulary/:from/:to" [from to] (vocabulary-view uid from to))
   (not-found "Page not found"))
 
 (defn -main [& args]

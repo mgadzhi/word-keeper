@@ -15,7 +15,13 @@
 (defn get-languages []
   (select languages))
 
-(defn get-translations [uid from to]
+(defn get-vocabularies [uid]
+  (select translations
+          (fields :from_lang :to_lang)
+          (where {:user_id uid})
+          (group :from_lang :to_lang)))
+
+(defn get-vocabulary [uid from to]
   (select translations
           (where {:user_id uid
                   :from_lang from
