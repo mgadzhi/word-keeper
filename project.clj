@@ -10,7 +10,8 @@
                  [cheshire "5.4.0"]
                  [korma "0.4.0"]
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
-                 [ragtime "0.3.8"]]
+                 [ragtime "0.3.8"]
+                 [buddy "0.5.3"]]
   :plugins [[ragtime/ragtime.lein "0.3.8"]]
   :ragtime {:migrations ragtime.sql.files/migrations
             :database "jdbc:postgresql://localhost/wordkeeper?user=wordkeeper"}

@@ -12,6 +12,16 @@
 (defn get-users []
   (select users))
 
+(defn select-user [login]
+  (first
+   (select users
+           (where {:login login}))))
+
+(defn insert-user [login password]
+  (insert users
+          (values {:login login
+                   :password password})))
+
 (defn get-languages []
   (select languages))
 
