@@ -2,7 +2,7 @@
   (:require [org.httpkit.server :refer [run-server]]
             [ring.middleware.reload :as reload]
             [compojure.handler :refer [site]]
-            [compojure.core :refer [defroutes GET POST]]
+            [compojure.core :refer [defroutes GET POST DELETE]]
             [compojure.route :refer [not-found]]
             [cheshire.core :refer [generate-string]]
             [word-keeper.db :as db]
@@ -65,6 +65,20 @@
     (let [vocab (db/get-vocabulary uid from to)]
       (json-response vocab))))
 
+(defn create-translation [uid from to]
+  (fn [req]
+    (let [word (-> req :params :word)
+          trans (-> req :params :trans)]
+      (db/insert-translation uid from to word trans)
+      (json-response {:message "Translation is created"}))))
+
+(defn delete-translation [uid from to]
+  (fn [req]
+    (let [word (-> req :params :word)
+          trans (-> req :params :trans)]
+      (db/delete-translation uid from to word trans)
+      (json-response {:message "Translation is deleted"}))))
+
 (defroutes routes
   (GET "/" [] (logged-handler hello))
   (GET "/users" [] users)
@@ -72,6 +86,8 @@
   (GET "/languages" [] languages)
   (GET "/vocabularies" [] (vocabularies uid))
   (GET "/vocabulary/:from/:to" [from to] (vocabulary uid from to))
+  (POST "/vocabulary/:from/:to" [from to] (create-translation uid from to))
+  (DELETE "/vocabulary/:from/:to" [from to] (delete-translation uid from to))
   (not-found "Page not found"))
 
 (defn -main [& args]

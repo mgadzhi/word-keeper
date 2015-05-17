@@ -39,3 +39,20 @@
           (where {:user_id uid
                   :from_lang from
                   :to_lang to})))
+
+(defn insert-translation [uid from to word trans]
+  (insert translations
+          (values {:user_id uid
+                   :from_lang from
+                   :to_lang to
+                   :word word
+                   :trans trans})))
+
+(defn delete-translation [uid from to word trans]
+  (delete translations
+          (where {:user_id uid
+                  :from_lang from
+                  :to_lang to
+                  :word word
+                  :trans trans})
+          (limit 1)))
